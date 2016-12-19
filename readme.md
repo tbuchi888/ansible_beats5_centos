@@ -1,8 +1,8 @@
 # ansible_elastic_beats5
 This is playbook to install beats5 on CentOS6/7 servers.
 I made this playbook in reference to the contents of the following official sites.
-https://www.elastic.co/guide/en/beats/libbeat/5.0/setup-repositories.html
-https://www.elastic.co/guide/en/beats/libbeat/5.0/getting-started.html
+- https://www.elastic.co/guide/en/beats/libbeat/5.0/setup-repositories.html
+- https://www.elastic.co/guide/en/beats/libbeat/5.0/getting-started.html
 
 ## Preparing for Step
 ### Elastisearch and Kibana
@@ -24,7 +24,7 @@ your Elasticsearch hosts on 'install_beats5_for_centos.yml'.
 ```
   vars:
 # Set your own Elasticsearch hosts
-    elasticsearch_host: 127.0.0.1
+    elasticsearch_host: 192.168.33.1
     elasticsearch_port: 9200
 ```
 
@@ -35,7 +35,7 @@ You must change inventory hosts file of Ansible for your environment of servers.
 Run.
 
 ```
-ansible-playbook -i hosts install_winlogbeat.yml -v
+ansible-playbook -i hosts install_beats5_for_centos.yml -v
 ```
 
 ## Caution
