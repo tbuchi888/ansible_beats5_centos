@@ -1,0 +1,67 @@
+---
+# Please use the OS of centOS6.
+# https://www.elastic.co/guide/en/beats/libbeat/5.0/setup-repositories.html
+# https://www.elastic.co/guide/en/beats/libbeat/5.0/getting-started.html
+# Setting the destination inventory host
+- hosts: all
+  become: yes
+  become_method: sudo
+  become_user: root
+  vars:
+# Set your own Elasticsearch hosts
+    elasticsearch_host: 127.0.0.1
+    elasticsearch_port: 9200
+
+# Don't gather hosts facts for performance
+  gather_facts: no
+
+# Setting the task
+
+  tasks:
+    - name: add rpm key for elastic5x
+      rpm_key:
+        state: present
+        key: https://packages.elastic.co/GPG-KEY-elasticsearch
+
+    - name: add yum repo for elastic5x
+      yum_repository: 
+        name: elastic-5.x
+        description: Elastic repository for 5.x packages
+        baseurl: https://artifacts.elastic.co/packages/5.x/yum
+        gpgcheck: yes
+        gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+
+    - name: yum install beats
+      yum: name={{item.name}} state={{item.state}}
+      register: yum_result
+      with_items:
+        - name: filebeat
+          state: latest
+        - name: metricbeat
+          state: latest
+        - name: packetbeat
+          state: latest
+    - debug: var=yum_result.results
+
+    - name: libselinux-python should have been installed
+      yum: name=libselinux-python state=installed
+
+    - name: file copy and jinjya2
+      template: src={{item.src}} dest={{item.dest}} owner=root group=root mode=644 backup=yes
+      with_items:
+          - src: ./beats/filebeat.yml.j2
+            dest: /etc/filebeat/filebeat.yml
+          - src: ./beats/metricbeat.yml.j2
+            dest: /etc/metricbeat/metricbeat.yml
+          - src: ./beats/packetbeat.yml.j2
+            dest: /etc/packetbeat/packetbeat.yml
+
+    - name: set services for beats
+      service: name={{item.name}} state=restarted enabled=yes
+      register: svs_result
+      with_items:
+          - name: filebeat
+          - name: metricbeat
+          - name: packetbeat
+    - debug: var=svs_result
