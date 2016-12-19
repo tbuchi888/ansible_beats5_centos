@@ -9,7 +9,7 @@
   become_user: root
   vars:
 # Set your own Elasticsearch hosts
-    elasticsearch_host: 127.0.0.1
+    elasticsearch_host: 192.168.33.1
     elasticsearch_port: 9200
 
 # Don't gather hosts facts for performance
