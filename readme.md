@@ -1,8 +1,8 @@
 # ansible_beats5_centos
-This is playbook to install beats5 on CentOS6/7 servers.
+This is playbook to install beats5.x by yum on CentOS6/7 servers.
 I made this playbook in reference to the contents of the following official sites.
-- https://www.elastic.co/guide/en/beats/libbeat/5.0/setup-repositories.html
-- https://www.elastic.co/guide/en/beats/libbeat/5.0/getting-started.html
+- https://www.elastic.co/guide/en/beats/libbeat/5.x/getting-started.html
+- https://www.elastic.co/guide/en/beats/libbeat/5.x/setup-repositories.html
 
 ## Preparing for Step
 ### Elastisearch and Kibana
